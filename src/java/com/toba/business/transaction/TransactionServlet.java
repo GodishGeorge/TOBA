@@ -1,3 +1,5 @@
+package com.toba.business.transaction;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author George
  */
-public class LoginServlet extends HttpServlet {
+public class TransactionServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -28,17 +30,10 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String userName = request.getParameter("Username");
-        String password = request.getParameter("Password");
-
-        if (userName.equals("jsmith@toba.com") && password.equals("letmein")) {
-            response.sendRedirect("account_activity.html");
-        } else {
-            response.sendRedirect("login_failure.html");
-        }
+        
     }
+    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
 
-// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *

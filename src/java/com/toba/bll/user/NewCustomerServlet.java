@@ -1,15 +1,19 @@
+package com.toba.bll.user;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+import com.toba.bll.user.User;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -58,6 +62,9 @@ public class NewCustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = "/new_customer.jsp";
+        
+        
+        HttpSession session = request.getSession();
 
         String action = request.getParameter("action");
         if (action == null) {
@@ -65,7 +72,7 @@ public class NewCustomerServlet extends HttpServlet {
         }
 
         if (action.equals("join")) {
-            url = "/success.html";
+            url = "/success.jsp";
         } else if (action.equals("add")) {
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
@@ -73,8 +80,15 @@ public class NewCustomerServlet extends HttpServlet {
             String address = request.getParameter("address");
             String city = request.getParameter("city");
             String state = request.getParameter("state");
-            String zipCode = request.getParameter("zipcode");
+            String zipcode = request.getParameter("zipcode");
             String email = request.getParameter("email");
+            String userName = request.getParameter("userName");
+            String password = request.getParameter("password");
+            String tempPassword = request.getParameter("tempPassword");
+          
+            
+            User user = new User(firstName, lastName, phone, address, city, 
+                    state, zipcode, email, userName, password, tempPassword);
 
             String message;
             if (firstName == null || firstName.isEmpty()
@@ -83,16 +97,18 @@ public class NewCustomerServlet extends HttpServlet {
                     || address == null || address.isEmpty()
                     || city == null || city.isEmpty()
                     || state == null || state.isEmpty()
-                    || zipCode == null || zipCode.isEmpty()
+                    || zipcode == null || zipcode.isEmpty()
                     || email == null || email.isEmpty()) {
                 message = "Please fill out all the form fields.";
                 url = "/new_customer.jsp";
                 request.setAttribute("message", message);
             } else {
                 message = "";
-                url = "/success.html";
+                url = "/success.jsp";
             }
-            
+            request.setAttribute("user", user);
+            session.setAttribute("user", user);
+           
         }
         getServletContext()
                 .getRequestDispatcher(url)
