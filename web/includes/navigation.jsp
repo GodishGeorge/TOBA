@@ -7,5 +7,6 @@
         <a href="new_customer.jsp">NEW CUSTOMER</a>
         <a href="account_activity.jsp">ACCOUNT</a>
         <a href="transaction.jsp">TRANSACTION</a>
+        <a href="transfer.jsp">Transfer Funds</a>
     </div>
 </div>
