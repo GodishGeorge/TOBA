@@ -1,72 +1,78 @@
 package com.toba.business.transaction;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+import com.toba.bll.user.Account;
+import com.toba.bll.user.User;
+import com.toba.dl.data.AccountDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author George
- */
 public class TransactionServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
     }
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+  
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        HttpSession session = request.getSession();
+        User user = (User)session.getAttribute("user");
+        String amount = request.getParameter("amount");
+        String checkingFrom = request.getParameter("checking1");
+        String savingsFrom = request.getParameter("savings1");
+        String checkingTo = request.getParameter("checking2");
+        String savingsTo = request.getParameter("savings2");
+        String message;
+      
+                
+        Account checking = AccountDB.selectAccount(user, "checking");
+        Account savings = AccountDB.selectAccount(user, "savings");
+        
+        double checkingBal = checking.getStartingBal();
+        double savingsBal = savings.getStartingBal();
+        
+        if(checkingFrom != null && savingsTo != null){
+            checking.Debit(Double.parseDouble(amount));
+            savings.Credit(Double.parseDouble(amount));
+            transaction trans = new transaction(savings, 
+                    Double.parseDouble(amount), savingsBal, "Savings");
+            savings.saveTransactions(trans);
+        } else if(savingsFrom != null && checkingTo != null){
+            savings.Debit(Double.parseDouble(amount));
+            checking.Credit(Double.parseDouble(amount));
+            transaction trans = new transaction(checking, 
+                    Double.parseDouble(amount), checkingBal, "Checking");
+            checking.saveTransactions(trans);
+        }else{
+            message = "Please checks account to be transfered.";
+        }
+        
+        AccountDB.update(savings);
+        AccountDB.update(checking);
+        
+        session.setAttribute("checking", checking);
+        session.setAttribute("Savings", savings);
+        
+       getServletContext()
+               .getRequestDispatcher("/account_activity.jsp")
+               .forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+   
     @Override
     public String getServletInfo() {
         return "Short description";

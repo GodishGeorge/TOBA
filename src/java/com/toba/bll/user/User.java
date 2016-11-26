@@ -1,8 +1,17 @@
 package com.toba.bll.user;
 
+import com.toba.dl.data.AccountDB;
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
+@Entity
 public class User implements Serializable{
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String firstName;
     private String lastName;
     private String phone;
@@ -13,7 +22,6 @@ public class User implements Serializable{
     private String email;
     private String userName;
     private String password;
-    private String tempPassword;
     
     public User(){
         firstName = "";
@@ -26,12 +34,11 @@ public class User implements Serializable{
         email = "";
         userName = "";
         password = "";
-        tempPassword = "";
     }
     
     public User(String firstName, String lastName, String phone, String address,
             String city, String state, String zipcode, String email,
-            String userName, String password, String tempPassword){
+            String userName, String password){
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -42,8 +49,17 @@ public class User implements Serializable{
         this.email = email;
         this.userName = userName;
         this.password = password;
-        this.tempPassword = tempPassword;
     }
+    
+     public double getCheckingBal() {
+        Account checkingBal = AccountDB.selectAccount(this, "checking");
+        return checkingBal.getStartingBal();
+    }
+     
+     public double getSavingsBal() {
+         Account savingsBal = AccountDB.selectAccount(this, "savings");
+         return savingsBal.getStartingBal();
+     }
     
     public String getPassword() {
         return password;
@@ -59,14 +75,6 @@ public class User implements Serializable{
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getTempPassword() {
-        return "welcome1";
-    }
-
-    public void setTempPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstName() {

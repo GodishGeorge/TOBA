@@ -7,6 +7,8 @@ package com.toba.bll.user;
  */
 
 import com.toba.bll.user.User;
+import com.toba.dl.data.AccountDB;
+import com.toba.dl.data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -15,49 +17,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author George
- */
+
 public class NewCustomerServlet extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
     }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -84,12 +57,22 @@ public class NewCustomerServlet extends HttpServlet {
             String email = request.getParameter("email");
             String userName = request.getParameter("userName");
             String password = request.getParameter("password");
-            String tempPassword = request.getParameter("tempPassword");
-          
+           
+            User user = new User();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setPhone(phone);
+            user.setAddress(address);
+            user.setCity(city);
+            user.setState(state);
+            user.setZipcode(zipcode);
+            user.setEmail(email);
+            user.setUserName(userName);
+            user.setPassword(password);
             
-            User user = new User(firstName, lastName, phone, address, city, 
-                    state, zipcode, email, userName, password, tempPassword);
-
+            Account checking = new Account("checking", 0.0, user);
+            Account savings = new Account("savings", 25.00, user);
+            
             String message;
             if (firstName == null || firstName.isEmpty()
                     || lastName == null || lastName.isEmpty()
@@ -105,6 +88,9 @@ public class NewCustomerServlet extends HttpServlet {
             } else {
                 message = "";
                 url = "/success.jsp";
+                UserDB.insert(user);
+                AccountDB.insert(checking);
+                AccountDB.insert(savings);
             }
             request.setAttribute("user", user);
             session.setAttribute("user", user);
@@ -115,14 +101,10 @@ public class NewCustomerServlet extends HttpServlet {
                 .forward(request, response);
     }
 
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
+  
     @Override
     public String getServletInfo() {
         return "Short description";
-    }// </editor-fold>
+    }
 
 }

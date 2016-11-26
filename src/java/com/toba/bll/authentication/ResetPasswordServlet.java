@@ -6,6 +6,7 @@
 package com.toba.bll.authentication;
 
 import com.toba.bll.user.User;
+import com.toba.dl.data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -47,15 +48,15 @@ public class ResetPasswordServlet extends HttpServlet {
         String message;
         String url;
         
-        /** This will be changed when a DB is made, right now it is set to take 
-         any input into the username and oldPassword fields just for the sake 
-         of it working**/
+        user.setPassword(newPassword);
+        
         if (userName.equals(userName) && oldPassword.equals(oldPassword)) {
             if (newPassword.equals(confirmPassword)) {
                 request.setAttribute("password", user);
                 message = "Password successfully changed";
                 url = "/account_activity.jsp";
                 request.setAttribute("message", message);
+                UserDB.update(user);
             } else {
                 message = "Passwords do not match, please try again.";
                 url = "/password_reset.jsp";
