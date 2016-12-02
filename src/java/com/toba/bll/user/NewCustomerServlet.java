@@ -84,15 +84,15 @@ public class NewCustomerServlet extends HttpServlet {
             }
             session.setAttribute("user", user);
 
-            request.setAttribute("message", message);
-            request.setAttribute("fName", firstName);
-            request.setAttribute("lName", lastName);
-            request.setAttribute("eMail", email);
-            request.setAttribute("phone", phone);
-            request.setAttribute("address", address);
-            request.setAttribute("city", city);
-            request.setAttribute("state", state);
-            request.setAttribute("zip", zipcode);
+            session.setAttribute("message", message);
+            session.setAttribute("fName", firstName);
+            session.setAttribute("lName", lastName);
+            session.setAttribute("eMail", email);
+            session.setAttribute("phone", phone);
+            session.setAttribute("address", address);
+            session.setAttribute("city", city);
+            session.setAttribute("state", state);
+            session.setAttribute("zip", zipcode);
 
         }
         getServletContext()
