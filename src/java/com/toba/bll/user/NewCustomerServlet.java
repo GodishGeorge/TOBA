@@ -5,22 +5,21 @@ package com.toba.bll.user;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 import com.toba.bll.user.User;
 import com.toba.dl.data.AccountDB;
 import com.toba.dl.data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
+@WebServlet(urlPatterns = {"/NewCustomerServlet"})
 public class NewCustomerServlet extends HttpServlet {
 
-  
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -31,12 +30,12 @@ public class NewCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
 
     }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String url = "/new_customer.jsp";
-        
-        
+
         HttpSession session = request.getSession();
 
         String action = request.getParameter("action");
@@ -55,21 +54,15 @@ public class NewCustomerServlet extends HttpServlet {
             String state = request.getParameter("state");
             String zipcode = request.getParameter("zipcode");
             String email = request.getParameter("email");
-           
-           
-            User user = new User();
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
-            user.setPhone(phone);
-            user.setAddress(address);
-            user.setCity(city);
-            user.setState(state);
-            user.setZipcode(zipcode);
-            user.setEmail(email);
-            
+            String userName = lastName + zipcode;
+            String password = "welcome1";
+
+            User user = new User(firstName, lastName, phone, address, city,
+                    state, zipcode, email, userName, password);
+
             Account checking = new Account("checking", 0.0, user);
             Account savings = new Account("savings", 25.00, user);
-            
+
             String message;
             if (firstName == null || firstName.isEmpty()
                     || lastName == null || lastName.isEmpty()
@@ -90,14 +83,23 @@ public class NewCustomerServlet extends HttpServlet {
                 AccountDB.insert(savings);
             }
             session.setAttribute("user", user);
-           
+
+            request.setAttribute("message", message);
+            request.setAttribute("fName", firstName);
+            request.setAttribute("lName", lastName);
+            request.setAttribute("eMail", email);
+            request.setAttribute("phone", phone);
+            request.setAttribute("address", address);
+            request.setAttribute("city", city);
+            request.setAttribute("state", state);
+            request.setAttribute("zip", zipcode);
+
         }
         getServletContext()
                 .getRequestDispatcher(url)
                 .forward(request, response);
     }
 
-  
     @Override
     public String getServletInfo() {
         return "Short description";
