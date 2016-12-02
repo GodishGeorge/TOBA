@@ -35,8 +35,10 @@ public class LoginServlet extends HttpServlet {
         User user = (User)session.getAttribute("user");
         String userName = request.getParameter("Username");
         String password = request.getParameter("Password");
-
-        if (userName.equals("jsmith@toba.com") && password.equals("letmein")) {
+        
+        if (user == null)
+            response.sendRedirect("new_customer.jsp");
+        else if (user.getUserName().equals(userName) && user.getPassword().equals(password)) {
             response.sendRedirect("account_activity.jsp");
         } else {
             response.sendRedirect("login_failure.html");

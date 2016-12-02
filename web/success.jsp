@@ -18,7 +18,7 @@
         Zip Code: ${user["zipcode"]}<br>
         Email: ${user["email"]}<br>
         Username: ${user["userName"]}<br>
-        Password: ${user["tempPassword"]}</p>
+        Password: ${user["password"]}</p>
     <p>Return to Titan <a href="index.html">Home</a></p>
 </div>
 

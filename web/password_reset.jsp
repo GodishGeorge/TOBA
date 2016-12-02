@@ -15,7 +15,7 @@
     <label>Old Password:</label>
     <input type="password" name="oldPassword" required>
     <label>New Password:</label>
-    <input type="password" name="newPassword" vaule="${user.password}" required>
+    <input type="password" name="newPassword" value="${user.password}" required>
     <label>Confirm Password</label>
     <input type="password" name="confirmPassword" required><br>
     <input type="submit" name="Reset" style="width: 6em; 

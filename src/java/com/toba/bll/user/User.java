@@ -32,8 +32,6 @@ public class User implements Serializable{
         state = "";
         zipcode = "";
         email = "";
-        userName = "";
-        password = "";
     }
     
     public User(String firstName, String lastName, String phone, String address,
@@ -47,8 +45,8 @@ public class User implements Serializable{
         this.state = state;
         this.zipcode = zipcode;
         this.email = email;
-        this.userName = userName;
-        this.password = password;
+        this.userName = this.lastName + this.zipcode;
+        this.password = "welcome1";
     }
     
      public double getCheckingBal() {

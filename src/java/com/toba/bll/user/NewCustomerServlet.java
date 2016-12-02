@@ -55,8 +55,7 @@ public class NewCustomerServlet extends HttpServlet {
             String state = request.getParameter("state");
             String zipcode = request.getParameter("zipcode");
             String email = request.getParameter("email");
-            String userName = request.getParameter("userName");
-            String password = request.getParameter("password");
+           
            
             User user = new User();
             user.setFirstName(firstName);
@@ -67,8 +66,6 @@ public class NewCustomerServlet extends HttpServlet {
             user.setState(state);
             user.setZipcode(zipcode);
             user.setEmail(email);
-            user.setUserName(userName);
-            user.setPassword(password);
             
             Account checking = new Account("checking", 0.0, user);
             Account savings = new Account("savings", 25.00, user);
@@ -92,7 +89,6 @@ public class NewCustomerServlet extends HttpServlet {
                 AccountDB.insert(checking);
                 AccountDB.insert(savings);
             }
-            request.setAttribute("user", user);
             session.setAttribute("user", user);
            
         }

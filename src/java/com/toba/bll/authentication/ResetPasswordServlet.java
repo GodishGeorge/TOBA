@@ -39,7 +39,7 @@ public class ResetPasswordServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
+         HttpSession session = request.getSession();
         User user = (User)session.getAttribute("user");
         String userName = request.getParameter("userName");
         String oldPassword = request.getParameter("oldPassword");
@@ -52,10 +52,11 @@ public class ResetPasswordServlet extends HttpServlet {
         
         if (userName.equals(userName) && oldPassword.equals(oldPassword)) {
             if (newPassword.equals(confirmPassword)) {
-                request.setAttribute("password", user);
+                user.setPassword(newPassword);
                 message = "Password successfully changed";
                 url = "/account_activity.jsp";
                 request.setAttribute("message", message);
+                session.setAttribute("user", user);
                 UserDB.update(user);
             } else {
                 message = "Passwords do not match, please try again.";
