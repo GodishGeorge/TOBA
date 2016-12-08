@@ -8,5 +8,6 @@
         <a href="account_activity.jsp">ACCOUNT</a>
         <a href="transaction.jsp">TRANSACTION</a>
         <a href="transfer.jsp">Transfer Funds</a>
+        <a href="admin/login.html">Admin Login</a>
     </div>
 </div>

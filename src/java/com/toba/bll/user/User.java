@@ -36,7 +36,7 @@ public class User implements Serializable{
         state = "";
         zipcode = "";
         email = "";
-        regiDate = "";
+        regiDate = regiDate;
     }
     
     public User(String firstName, String lastName, String phone, String address,
@@ -56,10 +56,6 @@ public class User implements Serializable{
 
     public String getRegiDate() {
         return regiDate;
-    }
-
-    public void setRegiDate(String regiDate) {
-        this.regiDate = regiDate;
     }
 
     public long getUserID() {

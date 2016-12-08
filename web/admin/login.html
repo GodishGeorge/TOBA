@@ -5,9 +5,23 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" type="text/css" href="page_layout.css">
+        <script src="menu_dropdown.js"></script>
     </head>
     <body>
         <h1>Titan Online Banking</h1>
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn">Menu</button>
+            <div id="myDropdown" class="dropdown-content">
+                <a href="../index.jsp">HOME</a>
+                <a href="../login.jsp">LOGIN</a>
+                <a href="../new_customer.jsp">NEW CUSTOMER</a>
+                <a href="../account_activity.jsp">ACCOUNT</a>
+                <a href="../transaction.jsp">TRANSACTION</a>
+                <a href="../transfer.jsp">Transfer Funds</a>
+                <a href="admin/login.html">Admin Login</a>
+                <a href="reports.jsp">Reports</a>
+            </div>
+        </div>
         <h2>Admin Login Forum</h2>
         <p>Please enter your username and password to continue</p>
         <form action="j_security_check" method="post">

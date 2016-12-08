@@ -40,23 +40,6 @@ public class AccountDB {
             em.close();
         }
     }
-
-    /*public static Account selectAccount(User user, String account) {
-        EntityManager em = DBUtil.getEmFactory().createEntityManager();
-        String qString = "SELECT a FROM Account a " +
-                "WHERE a.user = :user AND a.accountType = :ACCOUNT";
-        TypedQuery<Account> q = em.createQuery(qString, Account.class);
-        q.setParameter("user", user);
-        q.setParameter("ACCOUNT", account);
-        try {
-            Account accnt = q.getSingleResult();
-            return accnt;
-        } catch (NoResultException e) {
-            return null;
-        } finally {
-            em.close();
-        }
-    }*/
     
      public static Account selectSavAccount(long UserID) {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();

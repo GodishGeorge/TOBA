@@ -75,17 +75,20 @@ public class NewCustomerServlet extends HttpServlet {
                 request.setAttribute("message", message);
             } else {
                 HttpSession session = request.getSession();
-                String salt = PasswordUtil.getSalt();
-                try {
-                    String saltHashPassword = PasswordUtil.hashPassword(password + salt);
-                } catch (NoSuchAlgorithmException ex) {
-                    Logger.getLogger(NewCustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 DateFormat df = new SimpleDateFormat("MM/yyyy");
                 Date Date = new Date();
                 String regiDate = df.format(Date);
                 User user = new User(firstName, lastName, phone, address, city,
                         state, zipcode, email, regiDate);
+                Date currentDate = new Date();
+                 try {
+                    String salt = PasswordUtil.getSalt();
+                    String saltHashPassword = PasswordUtil.hashPassword(password + salt);
+                    user.setPassword(salt);
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(NewCustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                request.setAttribute("currentDate", currentDate);
                 Account checking = new Account("Checking", 0.0, user);
                 Account savings = new Account("Savings", 25.00, user);
                 session.setAttribute("password", user);

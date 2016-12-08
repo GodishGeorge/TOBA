@@ -11,18 +11,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-/**
- *
- * @author George
- */
+@WebServlet(name = "ReportsServlet", urlPatterns = {"/ReportsServlet"})
 public class ReportsServlet extends HttpServlet {
 
     /**
@@ -69,25 +68,16 @@ public class ReportsServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String url = "/admin/reports.jsp";
-
         HttpSession session = request.getSession();
 
         DateFormat df = new SimpleDateFormat("MM/yyyy");
         Date Date = new Date();
-        String currDate = df.format(Date);
+        String currentDate = df.format(Date);
 
-        User userMonthlyReport = UserDB.selectMonthlyReports("regiDate");
+        List<User> userMonthReport = UserDB.selectUserMonthReport(currentDate);
 
-        
-        session.setAttribute("userMonthReport", userMonthlyReport);
+        session.setAttribute("userMonthReport", userMonthReport);
 
-       
-        url = "/admin/reports.jsp";
-
-        getServletContext()
-                .getRequestDispatcher(url)
-                .forward(request, response);
     }
 
     @Override
