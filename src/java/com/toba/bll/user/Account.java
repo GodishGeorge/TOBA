@@ -1,51 +1,68 @@
 package com.toba.bll.user;
 
 import com.toba.bll.user.User;
-import com.toba.business.transaction.transaction;
+import com.toba.business.transaction.Transaction;
 import com.toba.dl.data.AccountDB;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-public class Account {
-
+@Entity
+public class Account implements Serializable {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long accountID;
+    private double startBal;
     private String accountType;
-    private double startingBal;
-    private User user;
+    private double balance;
+    private User acctOwner;
     @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-      private List<transaction> transactions;
+      private List<Transaction> transactions;
 
     public Account() {
-        accountType = "";
-        startingBal = 0.0;
-        user = new User();
     }
 
-    public Account(String accountType, double startingBal, User acctOwner) {
+    public Account(String accountType, double balance, User acctOwner) {
+        this.accountID = accountID;
         this.accountType = accountType;
-        this.startingBal = startingBal;
-        this.user = acctOwner;
+        this.balance = balance;
+        this.acctOwner = acctOwner;
         transactions = new ArrayList<>();
     }
 
-    public List<transaction> getTransactions() {
+    public long getAccountID() {
+        return accountID;
+    }
+
+    public void setAccountID(int accountID) {
+        this.accountID = accountID;
+    }
+    
+
+    public List<Transaction> getTransaction() {
         return transactions;
     }
 
-    public void setTransactions(List<transaction> transactions) {
+    public void setTransaction(List<Transaction> transactions) {
         this.transactions = transactions;
     }
 
     public double Credit(double amount) {
-        startingBal = startingBal + amount;
-        return startingBal;
+        return balance += amount;
     }
 
     public double Debit(double amount) {
-        startingBal = startingBal - amount;
-        return startingBal;
+        return balance -= amount;
     }
 
     public String getAccountType() {
@@ -56,23 +73,23 @@ public class Account {
         this.accountType = accountType;
     }
 
-    public double getStartingBal() {
-        return startingBal;
+    public double getBalance() {
+        return balance;
     }
 
-    public void setStartingBal(double startingBal) {
-        this.startingBal = startingBal;
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
-    public User getUser() {
-        return user;
+    public User getAcctOwner() {
+        return this.acctOwner;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setAcctOwner(User acctOwner) {
+        this.acctOwner = acctOwner;
     }
     
-    public void saveTransactions(transaction trans){
+    public void saveTransaction(Transaction trans){
         transactions.add(trans);
     }
 

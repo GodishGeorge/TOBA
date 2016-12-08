@@ -16,6 +16,10 @@
         <servlet-name>ResetPassword</servlet-name>
         <servlet-class>com.toba.bll.authentication.ResetPasswordServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ReportsServlet</servlet-name>
+        <servlet-class>com.toba.dl.data.ReportsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>NewCustomerServlet</servlet-name>
         <url-pattern>/new_customer</url-pattern>
@@ -43,6 +47,10 @@
     <welcome-file-list>
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
+    <servlet-mapping>
+        <servlet-name>ReportsServlet</servlet-name>
+        <url-pattern>/reports</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30

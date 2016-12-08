@@ -2,6 +2,7 @@ package com.toba.bll.user;
 
 import com.toba.dl.data.AccountDB;
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,6 +13,7 @@ public class User implements Serializable{
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private long userID;
     private String firstName;
     private String lastName;
     private String phone;
@@ -22,8 +24,10 @@ public class User implements Serializable{
     private String email;
     private String userName;
     private String password;
+    private String regiDate;
     
     public User(){
+        userID = 0;
         firstName = "";
         lastName = "";
         phone = "";
@@ -32,10 +36,11 @@ public class User implements Serializable{
         state = "";
         zipcode = "";
         email = "";
+        regiDate = "";
     }
     
     public User(String firstName, String lastName, String phone, String address,
-            String city, String state, String zipcode, String email, String userName, String password){
+            String city, String state, String zipcode, String email, String regiDate){
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -46,17 +51,24 @@ public class User implements Serializable{
         this.email = email;
         this.userName = this.lastName + this.zipcode;
         this.password = "welcome1";
+        this.regiDate = regiDate;
     }
-    
-     public double getCheckingBal() {
-        Account checkingBal = AccountDB.selectAccount(this, "checking");
-        return checkingBal.getStartingBal();
+
+    public String getRegiDate() {
+        return regiDate;
     }
-     
-     public double getSavingsBal() {
-         Account savingsBal = AccountDB.selectAccount(this, "savings");
-         return savingsBal.getStartingBal();
-     }
+
+    public void setRegiDate(String regiDate) {
+        this.regiDate = regiDate;
+    }
+
+    public long getUserID() {
+        return userID;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
     
     public String getPassword() {
         return password;

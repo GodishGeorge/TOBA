@@ -37,7 +37,7 @@ public class UserDB {
             em.close();
         }
     }
-    
+
     public static void delete(User user) {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
         EntityTransaction trans = em.getTransaction();
@@ -52,11 +52,11 @@ public class UserDB {
             em.close();
         }
     }
-    
+
     public static User selectUser(String email) {
         EntityManager em = DBUtil.getEmFactory().createEntityManager();
-        String qString = "SELECT u FROM User u " +
-                "WHERE u.email = :email";
+        String qString = "SELECT u FROM User u "
+                + "WHERE u.email = :email";
         TypedQuery<User> q = em.createQuery(qString, User.class);
         q.setParameter("email", email);
         try {
@@ -68,7 +68,23 @@ public class UserDB {
             em.close();
         }
     }
-    
+
+    public static User selectMonthlyReports(String month) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        String qString = "SELECT u FROM User u " +
+                "WHERE u.regiDate = :month";
+        TypedQuery<User> q = em.createQuery(qString, User.class);
+        q.setParameter("month", month);
+        try {
+            User user = q.getSingleResult();
+            return user;
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
     public static boolean emailExists(String email) {
         User u = selectUser(email);
         return u != null;

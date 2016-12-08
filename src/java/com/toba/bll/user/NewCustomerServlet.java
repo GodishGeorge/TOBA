@@ -7,9 +7,16 @@ package com.toba.bll.user;
  */
 import com.toba.bll.user.User;
 import com.toba.dl.data.AccountDB;
+import com.toba.dl.data.PasswordUtil;
 import com.toba.dl.data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -36,8 +43,6 @@ public class NewCustomerServlet extends HttpServlet {
             throws ServletException, IOException {
         String url = "/new_customer.jsp";
 
-        HttpSession session = request.getSession();
-
         String action = request.getParameter("action");
         if (action == null) {
             action = "join";
@@ -54,14 +59,7 @@ public class NewCustomerServlet extends HttpServlet {
             String state = request.getParameter("state");
             String zipcode = request.getParameter("zipcode");
             String email = request.getParameter("email");
-            String userName = lastName + zipcode;
             String password = "welcome1";
-
-            User user = new User(firstName, lastName, phone, address, city,
-                    state, zipcode, email, userName, password);
-
-            Account checking = new Account("checking", 0.0, user);
-            Account savings = new Account("savings", 25.00, user);
 
             String message;
             if (firstName == null || firstName.isEmpty()
@@ -76,23 +74,30 @@ public class NewCustomerServlet extends HttpServlet {
                 url = "/new_customer.jsp";
                 request.setAttribute("message", message);
             } else {
+                HttpSession session = request.getSession();
+                String salt = PasswordUtil.getSalt();
+                try {
+                    String saltHashPassword = PasswordUtil.hashPassword(password + salt);
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(NewCustomerServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                DateFormat df = new SimpleDateFormat("MM/yyyy");
+                Date Date = new Date();
+                String regiDate = df.format(Date);
+                User user = new User(firstName, lastName, phone, address, city,
+                        state, zipcode, email, regiDate);
+                Account checking = new Account("Checking", 0.0, user);
+                Account savings = new Account("Savings", 25.00, user);
+                session.setAttribute("password", user);
+                session.setAttribute("user", user);
+                session.setAttribute("checking", checking);
+                session.setAttribute("savings", savings);
                 message = "";
                 url = "/success.jsp";
                 UserDB.insert(user);
                 AccountDB.insert(checking);
                 AccountDB.insert(savings);
             }
-            session.setAttribute("user", user);
-
-            session.setAttribute("message", message);
-            session.setAttribute("fName", firstName);
-            session.setAttribute("lName", lastName);
-            session.setAttribute("eMail", email);
-            session.setAttribute("phone", phone);
-            session.setAttribute("address", address);
-            session.setAttribute("city", city);
-            session.setAttribute("state", state);
-            session.setAttribute("zip", zipcode);
 
         }
         getServletContext()

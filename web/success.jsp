@@ -19,7 +19,7 @@
         Email: ${user["email"]}<br>
         Username: ${user["userName"]}<br>
         Password: ${user["password"]}</p>
-    <p>Return to Titan <a href="index.html">Home</a></p>
+    <p>Return to Titan <a href="index.jsp">Home</a></p>
 </div>
 
 <c:import url="/includes/footer.jsp" />

@@ -52,7 +52,6 @@ public class ResetPasswordServlet extends HttpServlet {
         
         if (userName.equals(userName) && oldPassword.equals(oldPassword)) {
             if (newPassword.equals(confirmPassword)) {
-                user.setPassword(newPassword);
                 message = "Password successfully changed";
                 url = "/account_activity.jsp";
                 request.setAttribute("message", message);
